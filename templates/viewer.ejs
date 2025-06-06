@@ -3,36 +3,39 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contents of /<%= directory.fullname %>">
+    <meta name="description" content="Media viewer of <%= file.fullname %>">
     
     <link rel="shortcut icon" href="/_/Niko_origin.webp" type="image/webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Emoji:wght@700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 
-    <title>Contents of /<%= directory.fullname %></title>
+    <title>Preview of <%= file.fullname %></title>
   </head>
   <body>
     <div class="container">
-      <h1>Contents of
+      <h1>Preview of
         <div>
-          <span class="heading-textbg">/<%= directory.fullname %></span>
-          <span class="heading-text">/<%= directory.fullname %></span>
+          <span class="heading-textbg">/<%= file.fullname %></span>
+          <span class="heading-text">/<%= file.fullname %></span>
         </div>
       </h1>
-  
-      <nav class="hide-when-mobile">
+
+      <nav>
         <ul>
-          <li><a href="/">🌱</a></li>
-          <% for (const pathSlice of directory.pathSlices) { %>
-            <% const currentPath = pathSlice.split('/')[pathSlice.split('/').length - 1] %>
-  
-            <li class="div">/</li>
-            <li><a href="/<%= pathSlice %>/index.html"><%= currentPath %></a></li>
+          <li><a href="/<%= file.fullname %>">View Original</a></li>
+          <li><a href="/<%= file.fullname %>" download>Download</a></li>
+
+          <% if (file.mediaType !== 'audio') { %>
+            <li class="div hide-when-mobile">/</li>
+            <li class="hide-when-mobile"><a href="javascript:" onclick="document.getElementById('media').style.width='auto'">Original Size</a></li>
+            <li class="hide-when-mobile"><a href="javascript:" onclick="document.getElementById('media').style.width='100%'">w=full</a></li>
+            <li class="hide-when-mobile"><a href="javascript:" onclick="document.getElementById('media').style.width='60%'">w=60%</a></li>
+            <li class="hide-when-mobile"><a href="javascript:" onclick="document.getElementById('media').style.width='30%'">w=30%</a></li>
           <% } %>
         </ul>
       </nav>
-  
+
       <table>
         <thead>
           <tr>
@@ -46,7 +49,7 @@
         <tbody>
           <tr>
             <td>📁</td>
-            <td class="nav-col"><div><a href="./index.html">.</a></div></td>
+            <td class="nav-col"><div><a href="./viewer.html">.</a></div></td>
             <td class="hide-when-mobile"><div>DIR</div></td>
             <td class="hide-when-mobile-xs"><div>-</div></td>
             <td class="hide-when-mobile"><div>-</div></td>
@@ -58,30 +61,23 @@
             <td class="hide-when-mobile-xs"><div>-</div></td>
             <td class="hide-when-mobile"><div>-</div></td>
           </tr>
-          <% for (const childDirectory of directory.directories.values()) { %>
-            <tr>
-              <td>📂</td>
-              <td class="nav-col"><div><a href="/<%= childDirectory.fullname %>/index.html"><%= childDirectory.name %>/</a></div></td>
-              <td class="hide-when-mobile"><div>DIR</div></td>
-              <td class="hide-when-mobile-xs"><div>-</div></td>
-              <td class="hide-when-mobile"><div>-</div></td>
-            </tr>
-          <% } %>
-          <% for (const file of directory.files.values()) { %>
-            <tr>
-              <td>📄</td>
-              <% if (file.viewerAvailable) { %>
-                <td class="nav-col"><div><a href="/<%= file.fullname %>/viewer.html"><%= file.name %></a></div></td>
-              <% } else { %>
-                <td class="nav-col"><div><a href="/<%= file.fullname %>"><%= file.name %></a></div></td>
-              <% } %>
-              <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
-              <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
-              <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
-            </tr>
-          <% } %>
+          <tr>
+            <td>📄</td>
+            <td><%= file.name %></td>
+            <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
+            <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
+            <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
+          </tr>
         </tbody>
       </table>
+
+      <% if (file.mediaType === 'image') { %>
+        <img id="media" src="/<%= file.fullname %>" alt="<%= file.name %>" />
+      <% } else if (file.mediaType === 'video') { %>
+        <video id="media" controls autoplay src="/<%= file.fullname %>" />
+      <% } else if (file.mediaType === 'audio') { %>
+        <audio id="media" controls autoplay src="/<%= file.fullname %>" />
+      <% } %>
     </div>
 
     <img id="niko" src="/_/Niko_origin.webp" alt="Niko the Cat">
@@ -252,6 +248,12 @@
 
       table tr td:nth-child(5), table tr td:nth-child(5) div {
         width: 240px;
+      }
+
+      #media {
+        width: 100%;
+        max-width: 1200px;
+        display: block;
       }
     
       @media (max-width: 980px) {

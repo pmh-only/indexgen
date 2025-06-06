@@ -3,11 +3,13 @@ import { S3Service } from './S3Service.js'
 import { DirectoryFormat } from './DirectoryFormat.js'
 import { IndexTemplate } from './IndexTemplate.js'
 import { AssetsManager } from './AssetsManager.js'
+import { ViewerTemplate } from './ViewerTemplate.js'
 
 class Main {
   private readonly s3 = new S3Service()
   private readonly formatter = new DirectoryFormat()
-  private readonly template = new IndexTemplate()
+  private readonly indexTemplate = new IndexTemplate()
+  private readonly viewerTemplate = new ViewerTemplate()
   private readonly assets = new AssetsManager()
 
   private isProcessing = false
@@ -38,9 +40,11 @@ class Main {
   private async runJob(): Promise<void> {
     const objects = await this.s3.getAllObjects()
     const directory = this.formatter.parse(objects)
-    const indexes = this.template.compileAll(directory)
+    const indexes = this.indexTemplate.compileAll(directory)
+    const viewers = this.viewerTemplate.compileAll(directory)
+    const allTextObjects = new Map<string, string>([...indexes, ...viewers])
 
-    await this.s3.putAllTextObjects(indexes)
+    await this.s3.putAllTextObjects(allTextObjects)
 
     console.log('Finished Cycle', new Date())
   }
