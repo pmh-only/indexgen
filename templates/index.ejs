@@ -13,79 +13,81 @@
     <title>Contents of /<%= directory.fullname %></title>
   </head>
   <body>
-    <div class="container">
-      <h1>Contents of
-        <div>
-          <span class="heading-textbg">/<%= directory.fullname %></span>
-          <span class="heading-text">/<%= directory.fullname %></span>
-        </div>
-      </h1>
-  
-      <nav class="hide-when-mobile">
-        <ul>
-          <li><a href="/">🌱</a></li>
-          <% for (const pathSlice of directory.pathSlices) { %>
-            <% const currentPath = pathSlice.split('/')[pathSlice.split('/').length - 1] %>
-  
-            <li class="div">/</li>
-            <li><a href="/<%= pathSlice %>/index.html"><%= currentPath %></a></li>
-          <% } %>
-        </ul>
-      </nav>
-  
-      <table>
-        <thead>
-          <tr>
-            <td></td>
-            <td>name</td>
-            <td class="hide-when-mobile"><div>type</div></td>
-            <td class="hide-when-mobile-xs"><div>size</div></td>
-            <td class="hide-when-mobile"><div>modified</div></td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>📁</td>
-            <td class="nav-col"><div><a href="./index.html">.</a></div></td>
-            <td class="hide-when-mobile"><div>DIR</div></td>
-            <td class="hide-when-mobile-xs"><div>-</div></td>
-            <td class="hide-when-mobile"><div>-</div></td>
-          </tr>
-          <tr>
-            <td>📁</td>
-            <td class="nav-col"><div><a href="../index.html">..</a></div></td>
-            <td class="hide-when-mobile"><div>DIR</div></td>
-            <td class="hide-when-mobile-xs"><div>-</div></td>
-            <td class="hide-when-mobile"><div>-</div></td>
-          </tr>
-          <% for (const childDirectory of directory.directories.values()) { %>
+    <div class="outer-container">
+      <div class="container">
+        <h1>Contents of
+          <div>
+            <span class="heading-textbg">/<%= directory.fullname %></span>
+            <span class="heading-text">/<%= directory.fullname %></span>
+          </div>
+        </h1>
+
+        <nav class="hide-when-mobile">
+          <ul>
+            <li><a href="/">🌱</a></li>
+            <% for (const pathSlice of directory.pathSlices) { %>
+              <% const currentPath = pathSlice.split('/')[pathSlice.split('/').length - 1] %>
+    
+              <li class="div">/</li>
+              <li><a href="/<%= pathSlice %>/index.html"><%= currentPath %></a></li>
+            <% } %>
+          </ul>
+        </nav>
+
+        <table>
+          <thead>
             <tr>
-              <td>📂</td>
-              <td class="nav-col"><div><a href="/<%= childDirectory.fullname %>/index.html"><%= childDirectory.name %>/</a></div></td>
+              <td></td>
+              <td>name</td>
+              <td class="hide-when-mobile"><div>type</div></td>
+              <td class="hide-when-mobile-xs"><div>size</div></td>
+              <td class="hide-when-mobile"><div>modified</div></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>📁</td>
+              <td class="nav-col"><div><a href="./index.html">.</a></div></td>
               <td class="hide-when-mobile"><div>DIR</div></td>
               <td class="hide-when-mobile-xs"><div>-</div></td>
               <td class="hide-when-mobile"><div>-</div></td>
             </tr>
-          <% } %>
-          <% for (const file of directory.files.values()) { %>
             <tr>
-              <td>📄</td>
-              <% if (file.viewerAvailable) { %>
-                <td class="nav-col"><div><a href="/<%= file.fullname %>/viewer.html"><%= file.name %></a></div></td>
-              <% } else { %>
-                <td class="nav-col"><div><a href="/<%= file.fullname %>"><%= file.name %></a></div></td>
-              <% } %>
-              <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
-              <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
-              <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
+              <td>📁</td>
+              <td class="nav-col"><div><a href="../index.html">..</a></div></td>
+              <td class="hide-when-mobile"><div>DIR</div></td>
+              <td class="hide-when-mobile-xs"><div>-</div></td>
+              <td class="hide-when-mobile"><div>-</div></td>
             </tr>
-          <% } %>
-        </tbody>
-      </table>
+            <% for (const childDirectory of directory.directories.values()) { %>
+              <tr>
+                <td>📂</td>
+                <td class="nav-col"><div><a href="/<%= childDirectory.fullname %>/index.html"><%= childDirectory.name %>/</a></div></td>
+                <td class="hide-when-mobile"><div>DIR</div></td>
+                <td class="hide-when-mobile-xs"><div>-</div></td>
+                <td class="hide-when-mobile"><div>-</div></td>
+              </tr>
+            <% } %>
+            <% for (const file of directory.files.values()) { %>
+              <tr>
+                <td>📄</td>
+                <% if (file.viewerAvailable) { %>
+                  <td class="nav-col"><div><a href="/<%= file.fullname %>/viewer.html"><%= file.name %></a></div></td>
+                <% } else { %>
+                  <td class="nav-col"><div><a href="/<%= file.fullname %>"><%= file.name %></a></div></td>
+                <% } %>
+                <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
+                <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
+                <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <img id="niko" src="/_/Niko_origin.webp" alt="Niko the Cat">
     
+    <img id="niko" src="/_/Niko_origin.webp" alt="Niko the Cat">
+
     <style>
       :root {
         --bg-color: #f5f7fa;
@@ -103,15 +105,35 @@
         margin: 0;
         padding: 0;
       }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        background-color: var(--bg-color);
+      }
     
-      body {
+      .outer-container {
         font-family: "JetBrains Mono", "Noto Emoji", monospace;
         font-optical-sizing: auto;
 
-        background: var(--bg-color);
         color: var(--text-color);
         line-height: 1.6;
         padding: 20px;
+        height: 100%;
+
+        overflow: auto;
+        scrollbar-gutter: stable;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-color) transparent;
+      }
+      
+      .container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
       }
     
       h1 {
@@ -270,14 +292,6 @@
         .hide-when-mobile-xs {
           display: none;
         }
-      }
-
-      .container {
-        position: relative;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
       }
 
       #niko {
