@@ -8,6 +8,7 @@ import {
 } from '@aws-sdk/client-s3'
 import mime from 'mime-types'
 import path from 'node:path'
+import { createHash } from 'crypto'
 
 export interface S3Object extends _Object {
   ContentType?: string
@@ -74,39 +75,53 @@ export class S3Service {
 
   public async putAllTextObjects(objects: Map<string, string>): Promise<void> {
     const jobs = [...objects.entries()].map(
-      async ([Key, Body]) =>
-        await new Promise((resolve) => {
+      ([Key, Body]) =>
+        new Promise((resolve, reject) => {
           const command = new PutObjectCommand({
             Bucket: process.env.S3_BUCKET_NAME,
             Key,
             Body,
-            ContentType: 'text/html'
+            ContentType: 'text/html',
+            IfNoneMatch: this.md5Quoted(Body)
           })
 
-          this.client.send(command).then(resolve.bind(this))
+          this.client
+            .send(command)
+            .then(resolve.bind(this))
+            .catch(reject.bind(this))
         })
     )
 
-    await Promise.all(jobs)
+    await Promise.allSettled(jobs)
   }
 
   public async putAllBinaryObjects(objects: Map<string, string>) {
     const jobs = [...objects.entries()].map(
-      async ([Key, filepath]) =>
-        await new Promise((resolve) => {
+      ([Key, filepath]) =>
+        new Promise((resolve, reject) => {
+          const Body = fs.readFileSync(filepath)
           const command = new PutObjectCommand({
             Bucket: process.env.S3_BUCKET_NAME,
             Key,
-            Body: fs.readFileSync(filepath),
+            Body,
+            IfNoneMatch: this.md5Quoted(Body),
             ContentType:
               mime.contentType(path.extname(filepath)) ||
               'application/octet-stream'
           })
 
-          this.client.send(command).then(resolve.bind(this))
+          this.client
+            .send(command)
+            .then(resolve.bind(this))
+            .catch(reject.bind(this))
         })
     )
 
-    await Promise.all(jobs)
+    await Promise.allSettled(jobs)
+  }
+
+  private md5Quoted(body: string | Buffer): string {
+    const hash = createHash('md5').update(body).digest('hex')
+    return `"${hash}"`
   }
 }
