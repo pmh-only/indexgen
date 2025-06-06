@@ -19,7 +19,10 @@ class Main {
       .getAssetsRecursively()
       .then(this.s3.putAllBinaryObjects.bind(this.s3))
 
-    setInterval(this.onCycle.bind(this), 30 * 1000)
+    setInterval(
+      this.onCycle.bind(this),
+      parseInt(process.env.CYCLE_INTERVAL_SECONDS ?? '30') * 1000
+    )
   }
 
   private async onCycle(): Promise<void> {
@@ -45,6 +48,10 @@ class Main {
   private checkEnv() {
     if (process.env.S3_BUCKET_NAME === undefined) {
       throw new Error('S3_BUCKET_NAME is not set')
+    }
+
+    if (!(parseInt(process.env.CYCLE_INTERVAL_SECONDS ?? '30') > 0)) {
+      throw new Error('CYCLE_INTERVAL_SECONDS must be a positive integer')
     }
   }
 }

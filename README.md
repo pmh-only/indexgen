@@ -40,6 +40,7 @@ docker run -it \
   -e S3_ENDPOINT=https://s3.pmh.codes \
   -e S3_REGION=us-east-2 \
   -e S3_BUCKET_NAME=mybucket \
+  -e CYCLE_INTERVAL_SECONDS=100 \
   ghcr.io/pmh-only/indexgen:latest
 ```
 
