@@ -22,6 +22,8 @@ https://pub.pmh.codes
 ### viewer.html (mobile)
 ![viewer.html mobile screenshot](./docs/viewer_screenshot_mobile.png)
 
+### 100% Lighthouse optimized
+![lighthouse 100% score](.//docs/lighthouse.png)
 
 ## How to Run
 minimal example:
