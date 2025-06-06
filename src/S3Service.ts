@@ -60,16 +60,6 @@ export class S3Service {
       ContinuationToken = response.NextContinuationToken
     }
 
-    for (const object of objects) {
-      object.ContentType =
-        mime.contentType(path.extname(object.Key ?? '')) ||
-        'application/octet-stream'
-
-      object.ViewerAvailable = /^(image|audio|video)\/.*$/.test(
-        object.ContentType ?? ''
-      )
-    }
-
     return objects
   }
 

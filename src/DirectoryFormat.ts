@@ -2,6 +2,8 @@ import moment from 'moment'
 import path from 'node:path'
 import prettyBytes from 'pretty-bytes'
 import type { S3Object } from './S3Service.js'
+import { MediaType, MediaTypes } from './MediaTypes.js'
+import mime from 'mime-types'
 
 export enum ObjectType {
   DIRECTORY,
@@ -23,6 +25,7 @@ export interface Directory extends ObjectBase {
 
 export interface File extends ObjectBase {
   type: ObjectType.FILE
+  mediaType: MediaType
   contentType: string
   viewerAvailable: boolean
   lastModified: string
@@ -85,11 +88,16 @@ export class DirectoryFormat {
       path.dirname(object.Key ?? '')
     )
 
+    const mediaType = MediaTypes.getMediaType(object.Key ?? '')
+
     targetDirectory?.files.set(path.basename(object.Key ?? ''), {
       type: ObjectType.FILE,
       name: path.basename(object.Key ?? ''),
-      contentType: object.ContentType ?? '',
-      viewerAvailable: object.ViewerAvailable ?? false,
+      mediaType: mediaType,
+      contentType:
+        mime.contentType(path.extname(object.Key ?? '')) ||
+        'application/octet-stream',
+      viewerAvailable: mediaType !== 'other',
       fullname: object.Key ?? '',
       lastModified: moment
         .utc(object.LastModified ?? new Date())
