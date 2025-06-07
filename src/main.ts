@@ -29,12 +29,14 @@ class Main {
 
   private async onCycle(): Promise<void> {
     if (this.isProcessing) return
+    console.log(new Date(), 'Starting Cycle')
 
     this.isProcessing = true
 
     await this.runJob().catch(() => {})
 
     this.isProcessing = false
+    console.log(new Date(), 'Finished Cycle')
   }
 
   private async runJob(): Promise<void> {
@@ -45,8 +47,6 @@ class Main {
     const allTextObjects = new Map<string, string>([...indexes, ...viewers])
 
     await this.s3.putAllTextObjects(allTextObjects)
-
-    console.log('Finished Cycle', new Date())
   }
 
   private checkEnv() {

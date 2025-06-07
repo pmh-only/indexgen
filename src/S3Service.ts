@@ -78,7 +78,19 @@ export class S3Service {
           this.client
             .send(command)
             .then(resolve.bind(this))
-            .catch(reject.bind(this))
+            .catch((error: Error) => {
+              if (error.name === 'PreconditionFailed') {
+                console.warn(new Date(), `Skipping ${Key}: already exists`)
+                return reject(error)
+              }
+
+              console.log(
+                new Date(),
+                `Error uploading ${Key}: ${error.name}: ${error.message}`
+              )
+
+              reject(error)
+            })
         })
     )
 
@@ -103,7 +115,19 @@ export class S3Service {
           this.client
             .send(command)
             .then(resolve.bind(this))
-            .catch(reject.bind(this))
+            .catch((error: Error) => {
+              if (error.name === 'PreconditionFailed') {
+                console.warn(new Date(), `Skipping ${Key}: already exists`)
+                return reject(error)
+              }
+
+              console.log(
+                new Date(),
+                `Error uploading ${Key}: ${error.name}: ${error.message}`
+              )
+
+              reject(error)
+            })
         })
     )
 
