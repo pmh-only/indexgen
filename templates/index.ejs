@@ -73,11 +73,31 @@
               <tr>
                 <td>📄</td>
                 <% if (file.viewerAvailable) { %>
-                  <td class="nav-col"><div><a href="/<%= file.fullname %>/viewer.html"><%= file.name %></a></div></td>
+                  <td class="nav-col"><div>
+                    <% if (file.mediaType === 'image') { %>
+                        <a href="/<%= file.fullname %>/viewer.html">
+                          <span
+                            class="image-preview"
+                            data-media-url="/<%= file.fullname %>">
+                            <%= file.name %>
+                          </span>
+                        </a>
+                      <% } else { %>
+                        <a href="/<%= file.fullname %>/viewer.html">
+                          <span class="tooltip" data-tooltip="Click to preview in media viewer">
+                            <%= file.name %>
+                          </span>
+                        </a>
+                      <% } %>
+                  </div></td>
                 <% } else { %>
                   <td class="nav-col"><div><a href="/<%= file.fullname %>"><%= file.name %></a></div></td>
                 <% } %>
-                <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
+                <td class="hide-when-mobile">
+                  <div class="tooltip" data-tooltip="<%= file.contentType %>">
+                    <%= file.contentType %>
+                  </div>
+                </td>
                 <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
                 <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
               </tr>
@@ -88,5 +108,9 @@
     </div>
     
     <img id="niko" src="/_/Niko_origin.webp" alt="Niko the Cat">
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="/_/script.js"></script>
   </body>
 </html>

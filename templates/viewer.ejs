@@ -65,7 +65,7 @@
             </tr>
             <tr>
               <td>📄</td>
-              <td><%= file.name %></td>
+              <td class="nav-col"><%= file.name %></td>
               <td class="hide-when-mobile"><div><%= file.contentType %></div></td>
               <td class="hide-when-mobile-xs"><div><%= file.size %></div></td>
               <td class="hide-when-mobile"><div><%= file.lastModified %></div></td>
@@ -85,10 +85,8 @@
     
     <img id="niko" src="/_/Niko_origin.webp" alt="Niko the Cat">
 
-    <script>
-      function changeMediaSize(size) {
-        document.getElementById('media').style.width = size;
-      }
-    </script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="/_/script.js"></script>
   </body>
 </html>
