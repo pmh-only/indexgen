@@ -33,7 +33,9 @@ class Main {
 
     this.isProcessing = true
 
-    await this.runJob().catch(() => {})
+    await this.runJob().catch((err) =>
+      console.error(new Date(), 'Error during job execution', err)
+    )
 
     this.isProcessing = false
     console.log(new Date(), 'Finished Cycle')

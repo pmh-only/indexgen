@@ -80,6 +80,14 @@
         <% } else if (file.mediaType === 'audio') { %>
           <audio id="media" controls autoplay src="/<%= file.fullname %>" />
         <% } %>
+
+        <p><small>
+          <a href="https://github.com/pmh-only/indexgen">indexgen</a> |
+
+          <% for (const quicklink of quicklinks) { %>
+            <a href="<%= quicklink.link %>"><%= quicklink.title %></a>
+          <% } %>
+        </small></p>
       </div>
     </div>
     

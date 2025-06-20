@@ -107,6 +107,7 @@ nav a:hover {
   background: var(--primary-color);
   color: var(--secondary-color);
   box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  text-decoration: none;
 }
 
 .table-container {
@@ -147,9 +148,12 @@ td:first-child {
   font-size: 1.2em;
 }
 
-table a {
+a {
   color: var(--primary-color);
   text-decoration: none;
+}
+
+table a {
   display: block;
 }
 
@@ -157,7 +161,7 @@ table a > * {
   padding: 12px 0px;
 }
 
-table a:hover {
+a:hover {
   text-decoration: underline;
 }
 

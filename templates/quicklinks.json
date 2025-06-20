@@ -1,0 +1,14 @@
+[
+  {
+    "link": "/_/upload.html",
+    "title": "upload"
+  },
+  {
+    "link": "https://grafana.pmh.codes",
+    "title": "monitor"
+  },
+  {
+    "link": "https://argo.pmh.codes",
+    "title": "deploy"
+  }
+]

@@ -8,6 +8,10 @@ export class ViewerTemplate {
     .readFileSync('./templates/viewer.ejs')
     .toString()
 
+  private readonly quicklinks = JSON.parse(
+    fs.readFileSync('./templates/quicklinks.json').toString()
+  )
+
   public compileAll(rootDirectory: Directory): Map<string, string> {
     return this.compileOne(rootDirectory)
   }
@@ -24,7 +28,8 @@ export class ViewerTemplate {
       map.set(
         path.join(directory.fullname, file.name, 'viewer.html'),
         render(this.template, {
-          file
+          file,
+          quicklinks: this.quicklinks
         })
       )
     }

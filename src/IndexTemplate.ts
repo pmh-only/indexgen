@@ -8,6 +8,10 @@ export class IndexTemplate {
     .readFileSync('./templates/index.ejs')
     .toString()
 
+  private readonly quicklinks = JSON.parse(
+    fs.readFileSync('./templates/quicklinks.json').toString()
+  )
+
   public compileAll(rootDirectory: Directory): Map<string, string> {
     return this.compileOne(rootDirectory)
   }
@@ -22,7 +26,8 @@ export class IndexTemplate {
     map.set(
       path.join(directory.fullname, 'index.html'),
       render(this.template, {
-        directory
+        directory,
+        quicklinks: this.quicklinks
       })
     )
 
