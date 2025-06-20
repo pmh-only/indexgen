@@ -85,7 +85,7 @@
           <a href="https://github.com/pmh-only/indexgen">indexgen</a> |
 
           <% for (const quicklink of quicklinks) { %>
-            <a href="<%= quicklink.link %>"><%= quicklink.title %></a>
+            <a href="<%= quicklink.link %>?ref=/<%= file.fullname %>"><%= quicklink.title %></a>
           <% } %>
         </small></p>
       </div>
