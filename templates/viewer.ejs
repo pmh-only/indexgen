@@ -76,9 +76,9 @@
         <% if (file.mediaType === 'image') { %>
           <img id="media" src="/<%= file.fullname %>" alt="<%= file.name %>" />
         <% } else if (file.mediaType === 'video') { %>
-          <video id="media" controls autoplay src="/<%= file.fullname %>" />
+          <video id="media" controls autoplay src="/<%= file.fullname %>"></video>
         <% } else if (file.mediaType === 'audio') { %>
-          <audio id="media" controls autoplay src="/<%= file.fullname %>" />
+          <audio id="media" controls autoplay src="/<%= file.fullname %>"></audio>
         <% } %>
 
         <p><small>
